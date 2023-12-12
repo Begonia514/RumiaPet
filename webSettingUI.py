@@ -189,7 +189,8 @@ class webWindow(QTabWidget):
         cfg = ConfigGetter()
         filePath = cfg.webDataPath
         if not os.path.exists(filePath):
-            with open(filePath, 'w'):
+            with open(filePath, 'w') as file:
+                file.close()
                 pass
         try:
             with open(filePath,'r', newline='', encoding='utf-8') as csvfile:

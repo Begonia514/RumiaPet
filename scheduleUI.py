@@ -366,7 +366,8 @@ class TodoApp(QWidget):
     def loadItem(self,filePath):
         cfg = ConfigGetter()
         if not os.path.exists(filePath):
-            with open(filePath, 'w'):
+            with open(filePath, 'w') as file:
+                file.close()
                 pass
 
         try:

@@ -294,7 +294,8 @@ class App(QWidget):
         :return: 一般为二维数组
         '''
         if not os.path.exists(filePath):
-            with open(filePath, 'w'):
+            with open(filePath, 'w') as file:
+                file.close()
                 pass
         with open(filePath, 'r', newline='', encoding='utf-8') as file:
             reader = csv.reader(file)
