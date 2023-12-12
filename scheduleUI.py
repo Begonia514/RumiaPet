@@ -374,6 +374,8 @@ class TodoApp(QWidget):
             with open(filePath,'r', newline='', encoding='utf-8') as csvfile:
                 reader = csv.reader(csvfile)
                 for row in reader:
+                    if len(row) <=0:
+                        return
                     item = QListWidgetItem(row[0])
                     item.setData(Qt.UserRole, row[1])
                     item.setSizeHint(QSize(item.sizeHint().width(), cfg.scheduleItemHeight))
