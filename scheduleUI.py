@@ -298,8 +298,8 @@ class TodoApp(QWidget):
             print(item.text())
             print(item.checkState())
             if item.checkState() == Qt.Checked:
-                self.todoListWidget.takeItem(index-hasTrans)
-                todoLen -= 1;hasTrans += 1
+                self.todoListWidget.takeItem(index-hasDel)
+                todoLen -= 1;hasDel += 1
             index+=1
 
         hasDel = 0
@@ -307,8 +307,8 @@ class TodoApp(QWidget):
         while index<doneLen:
             item = self.doneListWidget.item(index)
             if item.checkState() == Qt.Checked:
-                self.doneListWidget.takeItem(index-hasTrans)
-                doneLen -= 1;hasTrans += 1
+                self.doneListWidget.takeItem(index-hasDel)
+                doneLen -= 1;hasDel += 1
             index+=1
 
 
