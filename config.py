@@ -99,6 +99,7 @@ class Config():
         self.imgpath = 'main.png'
         self.quit = 0
         self.ischangescale = 0
+        self.hiding = 0
 
         self.petSettingIsChange = False
         self.webSettingIsChange = False

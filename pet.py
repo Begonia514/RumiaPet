@@ -9,7 +9,7 @@ import configparser
 from setting import *
 from config import  ConfigGetter
 from scheduleUI import TodoApp
-
+from components.bubble import *
 
 class App(QWidget):
     def __init__(self, parent=None, **kwargs):
@@ -88,7 +88,7 @@ class App(QWidget):
         else:
             cfg.gamebottom = 0
 
-        #handle draging and drop
+        #handle quit
         if cfg.quit == 1:
             if cfg.playid<=cfg.quitactionnum:
                 cfg.imgpath = 'quit' + str(cfg.playid) + '.png'
@@ -96,11 +96,17 @@ class App(QWidget):
             else:
                 #final
                 self.quit()
-
+        elif cfg.hiding == 1:
+            if cfg.playid<=cfg.quitactionnum:
+                cfg.imgpath = 'quit' + str(cfg.playid) + '.png'
+                cfg.playid+=1
+            else:
+                #final
+                self.hide()
 
 
         # handle drag and fall
-        if cfg.drop==1 and cfg.onfloor==0 and cfg.quit==0:
+        elif cfg.drop==1 and cfg.onfloor==0 :
             if cfg.draging==1:
                 #print("Draging")
                 cfg.playnum=int(cfg.petactionnum[3])
@@ -127,7 +133,7 @@ class App(QWidget):
 
 
         # handle standing
-        if cfg.drop==0 or cfg.onfloor==1 and cfg.quit==0:
+        elif cfg.drop==0 or cfg.onfloor==1:
             
             if cfg.playtime==0:
                 cfg.petaction=random.random()
@@ -272,7 +278,7 @@ class App(QWidget):
         menu = QMenu(self)
         menu.addAction(QAction(QIcon('./data/icon/deviceon.png'), '开启掉落', self, triggered=self.dropon))
         menu.addAction(QAction(QIcon('./data/icon/deviceoff.png'), '禁用掉落', self, triggered=self.dropoff))
-        menu.addAction(QAction(QIcon('./data/icon/eye_protection.png'), '隐藏', self, triggered=self.hide))
+        menu.addAction(QAction(QIcon('./data/icon/eye_protection.png'), '隐藏', self, triggered=self.playHide))
         menu.addAction(QAction(QIcon('./data/icon/schedule.png'), '日程表', self, triggered=self.schedule))
 
         webMenu = QMenu('webMenu')
@@ -324,7 +330,9 @@ class App(QWidget):
             self.is_follow_mouse = True
             cfg.onfloor=0
             cfg.draging=1
-            cfg.playid=1
+            if cfg.quit != 1:
+                # means new action
+                cfg.playid=1
             event.accept()
             self.setCursor(QCursor(Qt.OpenHandCursor))
 
@@ -353,9 +361,8 @@ class App(QWidget):
     def mouseReleaseEvent(self, event):
         cfg = ConfigGetter()
         if event.button()==Qt.LeftButton:
-            # global onfloor,dropa,draging,playid
-            # global dragspeedx,dragspeedy,mouseposx1,mouseposx3,mouseposy1,mouseposy3
-            cfg.playid=1
+            if cfg.quit != 1:
+                cfg.playid=1
             cfg.onfloor=0
             cfg.draging=0
             self.is_follow_mouse = False
@@ -476,9 +483,20 @@ class App(QWidget):
         cfg.quit = 1
         cfg.playid = 1
 
+    def playHide(self):
+        cfg = ConfigGetter()
+        # quit优先级最高
+        if cfg.quit == 1:
+            return
+        cfg.hiding = 1
+        cfg.playid = 1
 
     def hide(self):
+        cfg = ConfigGetter()
         self.setVisible(False)
+        window = BubbleWindow("./data/rumia/hideBubble.png", cfg.screenwidth*2//3, cfg.deskheight)
+
+
 
     def show(self):
         self.setVisible(True)
