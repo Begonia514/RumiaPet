@@ -35,6 +35,7 @@ class petWindow(QTabWidget):
         self.defaultConfig1.setGeometry(QRect(50, 450, 100, 33))
         self.defaultConfig1.setObjectName("defaultConfig1")
         self.defaultConfig1.setStyleSheet(Style.defaultConfigButton)
+        self.defaultConfig1.clicked.connect(self.saveDefaultMsg)
 
 
         self.label_17 = QLabel(self)
@@ -379,9 +380,9 @@ class petWindow(QTabWidget):
         if str(cfg.petscale) != '1.0' :
             cfg.ischangescale = 1
 
-        cfg.petSettingIsChange = False
         self.loadpetconfig()
         self.readcfg(self)
+        cfg.petSettingIsChange = False
 
     def loadconfig(self):
         cfg = ConfigGetter()

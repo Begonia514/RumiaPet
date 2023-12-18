@@ -30,7 +30,7 @@ class ItemDialog(QDialog):
         self.nameEdit = QLineEdit(self.item.text())
         self.nameEdit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-        self.urlEdit = QLineEdit(self.item.data(Qt.UserRole))
+        self.urlEdit = QTextEdit(self.item.data(Qt.UserRole))
         self.urlEdit.setMinimumHeight(100)
         self.urlEdit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
@@ -181,7 +181,7 @@ class webWindow(QTabWidget):
         if result == QDialog.Accepted:
             cfg.webSettingIsChange = True
             item.setText(dialog.nameEdit.text())
-            item.setData(Qt.UserRole, dialog.urlEdit.text())
+            item.setData(Qt.UserRole, dialog.urlEdit.toPlainText())
         # #自下而上 一层层传递
         # isChange = isChange or dialog.isChange
 
