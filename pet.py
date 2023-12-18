@@ -386,7 +386,7 @@ class App(QWidget):
 
         menu.addAction(QAction(cfg.petname, self))
         menu.addAction(QAction(QIcon('./data/icon/eye_protection.png'),'显示', self, triggered=self.show))
-        menu.addAction(QAction(QIcon('./data/icon/visible.png'), '隐藏', self, triggered=self.hide))
+        menu.addAction(QAction(QIcon('./data/icon/visible.png'), '隐藏', self, triggered=self.playHide))
         menu.addAction(QAction(QIcon('./data/icon/deviceon.png'), '开启掉落', self, triggered=self.dropon))
         menu.addAction(QAction(QIcon('./data/icon/deviceoff.png'), '禁用掉落', self, triggered=self.dropoff))
 
@@ -488,17 +488,24 @@ class App(QWidget):
         # quit优先级最高
         if cfg.quit == 1:
             return
+        if cfg.hidden == 1:
+            self.hide()
         cfg.hiding = 1
         cfg.playid = 1
 
     def hide(self):
         cfg = ConfigGetter()
         self.setVisible(False)
-        window = BubbleWindow("./data/rumia/hideBubble.png", cfg.screenwidth*2//3, cfg.deskheight)
+        self.bubble = BubbleWindow("./data/rumia/hideBubble.png", cfg.screenwidth*2//3, cfg.deskheight)
+        self.bubble.show()
+        cfg.hiding = 0
+        cfg.hidden = 1
 
 
 
     def show(self):
+        cfg = ConfigGetter()
+        cfg.hidden = 0
         self.setVisible(True)
 
     # def restart_program(self):
