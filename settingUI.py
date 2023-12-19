@@ -10,14 +10,35 @@ from PIL import Image
 class petWindow(QTabWidget):
     def __init__(self):
         super(petWindow, self).__init__()
+        self.numberOfInput = 10
 
         self.initUI()
 
     def textChange(self):
         cfg = ConfigGetter()
-        check1 = checkers.SettingUIChecker.OneDecimalChecker(self, self.inputBoxes[0].text(), 4)
+
+        checks = []
+        for i in range(self.numberOfInput):
+            checks.append(True)
+
+        checks[0] = checkers.SettingUIChecker.Checker1(self, self.inputBoxes[0].text())
+        # checks[1] = ......
+        # checks[2] = ......
+        # ......
+
+        totalCheck = True
+        for i in range(self.numberOfInput):
+            if checks[i]:
+                self.inputBoxes[i].setStyleSheet("QLineEdit { border: 1px solid black; }")
+                checks[i] = True
+            else:
+                self.inputBoxes[i].setStyleSheet("QLineEdit { border: 1px solid red; }")
+                checks[i] = False
+            totalCheck = totalCheck & checks[i]
+
         cfg.petSettingIsChange=True
-        cfg.settingUICheck = check1
+
+        cfg.settingUICheck = totalCheck
 
 
 
@@ -36,8 +57,8 @@ class petWindow(QTabWidget):
 
         # 恢复默认按钮
         self.restorationConfig = QPushButton(self)
-        self.restorationConfig.setGeometry(QRect(50, 450, 100, 33))
-        self.restorationConfig.setObjectName("defaultConfig1")
+        self.restorationConfig.setGeometry(QRect(10, 370, 100, 33))
+        self.restorationConfig.setObjectName("restorationConfig")
         self.restorationConfig.setStyleSheet(Style.defaultConfigButton)
         self.restorationConfig.clicked.connect(self.saveDefaultMsg)
 
@@ -49,17 +70,15 @@ class petWindow(QTabWidget):
         self.tip.setFont(font)
         self.tip.setTextInteractionFlags(
             Qt.LinksAccessibleByMouse | Qt.TextSelectableByKeyboard | Qt.TextSelectableByMouse)
-        self.tip.setObjectName("label_18")
-
-        numberOfInput = 10
+        self.tip.setObjectName("tip")
 
         self.labels = []
         self.inputBoxes = []
-        for i in range (numberOfInput):
+        for i in range (self.numberOfInput):
             self.labels.append(QLabel(self))
             self.inputBoxes.append(QLineEdit(self))
 
-        for i in range (numberOfInput):
+        for i in range (self.numberOfInput):
             font = QFont()
             font.setBold(False)
             font.setWeight(50)
@@ -76,36 +95,36 @@ class petWindow(QTabWidget):
         self.labels[0].setGeometry(QRect(10, 70, 101, 21))
         self.inputBoxes[0].setGeometry(QRect(110, 70, 113, 21))
 
-        self.labels[1].setGeometry(QRect(10, 100, 101, 21))
-        self.inputBoxes[1].setGeometry(QRect(110, 100, 113, 21))
+        self.labels[1].setGeometry(QRect(10, 130, 101, 21))
+        self.inputBoxes[1].setGeometry(QRect(110, 130, 113, 21))
 
-        self.labels[2].setGeometry(QRect(10, 160, 101, 21))
-        self.inputBoxes[2].setGeometry(QRect(110, 160, 113, 21))
+        self.labels[2].setGeometry(QRect(10, 250, 101, 21))
+        self.inputBoxes[2].setGeometry(QRect(110, 250, 113, 21))
 
-        self.labels[3].setGeometry(QRect(260, 160, 101, 21))
-        self.inputBoxes[3].setGeometry(QRect(360, 160, 113, 21))
+        self.labels[3].setGeometry(QRect(260, 70, 101, 21))
+        self.inputBoxes[3].setGeometry(QRect(360, 70, 113, 21))
 
-        self.labels[4].setGeometry(QRect(260, 190, 101, 21))
-        self.inputBoxes[4].setGeometry(QRect(360, 190, 113, 21))
+        self.labels[4].setGeometry(QRect(260, 130, 101, 21))
+        self.inputBoxes[4].setGeometry(QRect(360, 130, 113, 21))
 
-        self.labels[5].setGeometry(QRect(260, 130, 101, 21))
-        self.inputBoxes[5].setGeometry(QRect(360, 130, 113, 21))
+        self.labels[5].setGeometry(QRect(260, 190, 101, 21))
+        self.inputBoxes[5].setGeometry(QRect(360, 190, 113, 21))
 
-        self.labels[6].setGeometry(QRect(10, 130, 101, 21))
-        self.inputBoxes[6].setGeometry(QRect(110, 130, 113, 21))
+        self.labels[6].setGeometry(QRect(10, 190, 101, 21))
+        self.inputBoxes[6].setGeometry(QRect(110, 190, 113, 21))
 
-        self.labels[7].setGeometry(QRect(260, 100, 101, 21))
-        self.inputBoxes[7].setGeometry(QRect(360, 100, 113, 21))
+        self.labels[7].setGeometry(QRect(260, 250, 101, 21))
+        self.inputBoxes[7].setGeometry(QRect(360, 250, 113, 21))
 
-        self.labels[8].setGeometry(QRect(510, 100, 101, 21))
-        self.inputBoxes[8].setGeometry(QRect(610, 100, 113, 21))
+        self.labels[8].setGeometry(QRect(260, 310, 101, 21))
+        self.inputBoxes[8].setGeometry(QRect(360, 310, 113, 21))
 
-        self.labels[9].setGeometry(QRect(10, 190, 101, 21))
-        self.inputBoxes[9].setGeometry(QRect(110, 190, 113, 21))
+        self.labels[9].setGeometry(QRect(10, 310, 101, 21))
+        self.inputBoxes[9].setGeometry(QRect(110, 310, 113, 21))
 
 
         self.settingthrowout = QCheckBox(self)
-        self.settingthrowout.setGeometry(QRect(10, 220, 91, 21))
+        self.settingthrowout.setGeometry(QRect(560, 70, 113, 21))
         font = QFont()
         font.setBold(False)
         font.setWeight(50)
@@ -114,9 +133,8 @@ class petWindow(QTabWidget):
         self.settingthrowout.setObjectName("settingthrowout")
         self.settingthrowout.stateChanged.connect(self.stateChange)
 
-
         self.settingintotray = QCheckBox(self)
-        self.settingintotray.setGeometry(QRect(110, 220, 91, 21))
+        self.settingintotray.setGeometry(QRect(560, 190, 113, 21))
         font = QFont()
         font.setBold(False)
         font.setWeight(50)
@@ -124,19 +142,8 @@ class petWindow(QTabWidget):
         self.settingintotray.setObjectName("settingintotray")
         self.settingintotray.stateChanged.connect(self.stateChange)
 
-
-        self.label_26 = QLabel(self)
-        self.label_26.setGeometry(QRect(10, 330, 91, 21))
-        font = QFont()
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_26.setFont(font)
-        self.label_26.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByKeyboard|Qt.TextSelectableByMouse)
-        self.label_26.setObjectName("label_26")
-
-
         self.settingmirror = QCheckBox(self)
-        self.settingmirror.setGeometry(QRect(640, 300, 91, 21))
+        self.settingmirror.setGeometry(QRect(560, 310, 113, 21))
         font = QFont()
         font.setBold(False)
         font.setWeight(50)
@@ -156,34 +163,34 @@ class petWindow(QTabWidget):
         self.tip.setText("鼠标在参数名或输入框上悬停，可查看各参数说明")
 
         self.labels[0].setToolTip("1就是原尺寸，0.5就是一半，2就是2倍")
-        self.labels[0].setText("#缩放比例：")
-        self.inputBoxes[0].setToolTip("1就是原尺寸，0.5就是一半，2就是2倍")
+        self.labels[0].setText("缩放比例：")
+        self.inputBoxes[0].setToolTip("请输入一位小数，范围是1到2之间")
         self.labels[1].setToolTip("底部偏移距离")
-        self.labels[1].setText("#底部偏移：")
+        self.labels[1].setText("底部偏移：")
         self.inputBoxes[1].setToolTip("底部偏移距离，可以用来制作一部分爪子露在开始菜单外面的样子。正数往下")
         self.labels[2].setToolTip("丢来丢去的速度（水平）")
-        self.labels[2].setText("#水平扔出：")
+        self.labels[2].setText("水平扔出：")
         self.inputBoxes[2].setToolTip("丢来丢去的速度（水平）")
         self.labels[3].setToolTip("丢来丢去的速度（竖直）")
-        self.labels[3].setText("#竖直扔出：")
+        self.labels[3].setText("竖直扔出：")
         self.inputBoxes[3].setToolTip("丢来丢去的速度（竖直）")
         self.labels[4].setToolTip("重力加速度，影响掉落速度")
-        self.labels[4].setText("#重力加速度：")
+        self.labels[4].setText("重力加速度：")
         self.inputBoxes[4].setToolTip("重力加速度，影响掉落速度")
         self.labels[5].setToolTip("动画播放速度，数值越小播放得越快")
-        self.labels[5].setText("#刷新速度：")
+        self.labels[5].setText("刷新速度：")
         self.inputBoxes[5].setToolTip("动画播放速度，数值越小播放得越快")
         self.labels[6].setToolTip("往左往右走路的速度，越大越快")
-        self.labels[6].setText("#走路速度：")
+        self.labels[6].setText("走路速度：")
         self.inputBoxes[6].setToolTip("往左往右走路的速度，越大越快")
         self.labels[7].setToolTip("拖拽时坐标偏移，用于改变拖拽时宠物和鼠标的相对位置，比如要拎起脖子之类的。正数往右")
-        self.labels[7].setText("#拖拽偏移X：")
+        self.labels[7].setText("拖拽偏移X：")
         self.inputBoxes[7].setToolTip("拖拽时坐标偏移，用于改变拖拽时宠物和鼠标的相对位置，比如要拎起脖子之类的。正数往右")
         self.labels[8].setToolTip("拖拽时坐标偏移，用于改变拖拽时宠物和鼠标的相对位置，比如要拎起脖子之类的。y正数往下")
-        self.labels[8].setText("#拖拽偏移Y：")
+        self.labels[8].setText("拖拽偏移Y：")
         self.inputBoxes[8].setToolTip("拖拽时坐标偏移，用于改变拖拽时宠物和鼠标的相对位置，比如要拎起脖子之类的。y正数往下")
         self.labels[9].setToolTip("字面意思")
-        self.labels[9].setText("#掉落速度：")
+        self.labels[9].setText("掉落速度：")
         self.inputBoxes[9].setToolTip("掉落速度")
 
         self.settingthrowout.setToolTip("是否可以往两边扔出去，打勾为允许")

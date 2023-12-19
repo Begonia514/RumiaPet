@@ -4,6 +4,6 @@ class SettingUIChecker:
     def __init__(self, text):
         self.text = text
 
-    def OneDecimalChecker(self, text, intPart):
-        pattern = re.compile(r'^[0-4]\.\d$')
+    def Checker1(self, text):
+        pattern = re.compile(r'^[1-2]\.\d$')
         return pattern.match(text)
