@@ -1,3 +1,5 @@
+import configparser
+
 import settingUI
 import webSettingUI
 from config import ConfigGetter
@@ -24,10 +26,10 @@ class Setting(QMainWindow):
         :param MainWindow: Setting的父类
         :return:
         '''
-        self.setWindowTitle("Rumia setting")
+        self.setWindowTitle("设置界面")
         self.setWindowIcon(QIcon('./favicon.ico'))
         MainWindow.setObjectName("Rumia Setting")
-        MainWindow.resize(800, 600)
+        MainWindow.setFixedSize(800, 600)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.QTabWidget1 = QTabWidget(self)
@@ -66,15 +68,21 @@ class Setting(QMainWindow):
 
 
     def saveAll(self):
-        try:
-            self.petTab.savecfg2()
-            self.webTab.saveItemsToCSV()
-        except Exception as e:
-            QMessageBox.critical(self, '发生错误', f'发生了一个错误:\n{type(e).__name__}: {str(e)}')
-            return
-        info = QMessageBox(QMessageBox.Information, "提示", "修改成功！")
-        qyes = info.addButton(self.tr("确定"), QMessageBox.YesRole)
-        info.exec_()
+        cfg = ConfigGetter()
+        if cfg.settingUICheck:
+            try:
+                self.petTab.savecfg2()
+                self.webTab.saveItemsToCSV()
+            except Exception as e:
+                QMessageBox.critical(self, '发生错误', f'发生了一个错误:\n{type(e).__name__}: {str(e)}')
+                return
+            info = QMessageBox(QMessageBox.Information, "提示", "修改成功！")
+            qyes = info.addButton(self.tr("确定"), QMessageBox.YesRole)
+            info.exec_()
+        else:
+            info = QMessageBox(QMessageBox.Information, "提示", "存在不符合要求的输入")
+            qyes = info.addButton(self.tr("确定"), QMessageBox.YesRole)
+            info.exec_()
 
 
     def setupPetSetting(self):

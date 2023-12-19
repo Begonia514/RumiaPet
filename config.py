@@ -105,3 +105,6 @@ class Config():
         self.petSettingIsChange = False
         self.webSettingIsChange = False
         self.scheduleIsChange = False
+
+        #SettingUI校验
+        self.settingUICheck = True
