@@ -1,15 +1,18 @@
-import checkers
+from components import checkers
+import config
 from style import Style
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from config import ConfigGetter
-import os,configparser,sys
+import os,configparser
 from PIL import Image
 
 class petWindow(QTabWidget):
     def __init__(self):
         super(petWindow, self).__init__()
+        # self.setStyleSheet("background-image: url(./data/rumia/background.png);"
+        #                         "background-color: rgba(255, 255, 255, 10);")
         self.numberOfInput = 10
 
         self.initUI()
@@ -21,18 +24,28 @@ class petWindow(QTabWidget):
         for i in range(self.numberOfInput):
             checks.append(True)
 
-        checks[0] = checkers.SettingUIChecker.Checker1(self, self.inputBoxes[0].text())
-        # checks[1] = ......
-        # checks[2] = ......
-        # ......
+        checks[0] = checkers.SettingUIChecker.Checker0(self, self.inputBoxes[0].text())
+        checks[1] = checkers.SettingUIChecker.Checker1(self, self.inputBoxes[1].text())
+        checks[2] = checkers.SettingUIChecker.Checker2(self, self.inputBoxes[2].text())
+        checks[3] = checkers.SettingUIChecker.Checker3(self, self.inputBoxes[3].text())
+        checks[4] = checkers.SettingUIChecker.Checker4(self, self.inputBoxes[4].text())
+        checks[5] = checkers.SettingUIChecker.Checker5(self, self.inputBoxes[5].text())
+        checks[6] = checkers.SettingUIChecker.Checker6(self, self.inputBoxes[6].text())
+        checks[7] = checkers.SettingUIChecker.Checker7(self, self.inputBoxes[7].text())
+        checks[8] = checkers.SettingUIChecker.Checker8(self, self.inputBoxes[8].text())
+        checks[9] = checkers.SettingUIChecker.Checker9(self, self.inputBoxes[9].text())
 
         totalCheck = True
         for i in range(self.numberOfInput):
             if checks[i]:
-                self.inputBoxes[i].setStyleSheet("QLineEdit { border: 1px solid black; }")
+                self.inputBoxes[i].setStyleSheet(
+                    "QLineEdit { border: none; border-radius: 4px; padding: 2px 10px;"
+                    " background: rgba(192, 192, 192, 90); }")
                 checks[i] = True
             else:
-                self.inputBoxes[i].setStyleSheet("QLineEdit { border: 1px solid red; }")
+                self.inputBoxes[i].setStyleSheet(
+                    "QLineEdit { border: none; border-radius: 4px; padding: 2px 10px;"
+                    " background: rgba(255, 192, 203, 150); }")
                 checks[i] = False
             totalCheck = totalCheck & checks[i]
 
@@ -57,7 +70,7 @@ class petWindow(QTabWidget):
 
         # 恢复默认按钮
         self.restorationConfig = QPushButton(self)
-        self.restorationConfig.setGeometry(QRect(10, 370, 100, 33))
+        self.restorationConfig.setGeometry(QRect(20, 370, 100, 33))
         self.restorationConfig.setObjectName("restorationConfig")
         self.restorationConfig.setStyleSheet(Style.defaultConfigButton)
         self.restorationConfig.clicked.connect(self.saveDefaultMsg)
@@ -79,7 +92,7 @@ class petWindow(QTabWidget):
             self.inputBoxes.append(QLineEdit(self))
 
         for i in range (self.numberOfInput):
-            font = QFont()
+            font = QFont("萝莉体")
             font.setBold(False)
             font.setWeight(50)
             self.labels[i].setFont(font)
@@ -88,6 +101,9 @@ class petWindow(QTabWidget):
             self.labels[i].setObjectName("label_"+str(i))
 
             self.inputBoxes[i].setObjectName("input_"+str(i))
+            self.inputBoxes[i].setStyleSheet(
+                "QLineEdit { border: none; border-radius: 4px; padding: 2px 10px;"
+                " background: rgba(128, 128, 128, 150); }")
             self.inputBoxes[i].textChanged.connect(self.textChange)
 #######################
 # 各个组件位置和细节设置  #
@@ -134,7 +150,7 @@ class petWindow(QTabWidget):
         self.settingthrowout.stateChanged.connect(self.stateChange)
 
         self.settingintotray = QCheckBox(self)
-        self.settingintotray.setGeometry(QRect(560, 190, 113, 21))
+        self.settingintotray.setGeometry(QRect(560, 190, 160, 21))
         font = QFont()
         font.setBold(False)
         font.setWeight(50)
@@ -164,39 +180,39 @@ class petWindow(QTabWidget):
 
         self.labels[0].setToolTip("1就是原尺寸，0.5就是一半，2就是2倍")
         self.labels[0].setText("缩放比例：")
-        self.inputBoxes[0].setToolTip("请输入一位小数，范围是1到2之间")
-        self.labels[1].setToolTip("底部偏移距离")
-        self.labels[1].setText("底部偏移：")
-        self.inputBoxes[1].setToolTip("底部偏移距离，可以用来制作一部分爪子露在开始菜单外面的样子。正数往下")
-        self.labels[2].setToolTip("丢来丢去的速度（水平）")
+        self.inputBoxes[0].setToolTip("请输入0.5到1.0之间的一位小数")
+        self.labels[1].setToolTip("露米娅距离底部工作栏的高度")
+        self.labels[1].setText("桌宠高度：")
+        self.inputBoxes[1].setToolTip("请输入0到"+ str(config.ConfigGetter().SCREEN_HEIGHT) + "之间的整数，注意不要超过自己的屏幕分辨率哦")
+        self.labels[2].setToolTip("丢出露米娅后她的水平速度")
         self.labels[2].setText("水平扔出：")
-        self.inputBoxes[2].setToolTip("丢来丢去的速度（水平）")
-        self.labels[3].setToolTip("丢来丢去的速度（竖直）")
+        self.inputBoxes[2].setToolTip("请输入0.0到4.0之间的一位小数")
+        self.labels[3].setToolTip("丢出露米娅后她的竖直速度")
         self.labels[3].setText("竖直扔出：")
-        self.inputBoxes[3].setToolTip("丢来丢去的速度（竖直）")
+        self.inputBoxes[3].setToolTip("请输入0.0到4.0之间的一位小数")
         self.labels[4].setToolTip("重力加速度，影响掉落速度")
         self.labels[4].setText("重力加速度：")
-        self.inputBoxes[4].setToolTip("重力加速度，影响掉落速度")
+        self.inputBoxes[4].setToolTip("请输入0到10之间的整数")
         self.labels[5].setToolTip("动画播放速度，数值越小播放得越快")
         self.labels[5].setText("刷新速度：")
-        self.inputBoxes[5].setToolTip("动画播放速度，数值越小播放得越快")
+        self.inputBoxes[5].setToolTip("请输入100到200之间的整数")
         self.labels[6].setToolTip("往左往右走路的速度，越大越快")
         self.labels[6].setText("走路速度：")
-        self.inputBoxes[6].setToolTip("往左往右走路的速度，越大越快")
+        self.inputBoxes[6].setToolTip("请输入0到40之间的整数")
         self.labels[7].setToolTip("拖拽时坐标偏移，用于改变拖拽时宠物和鼠标的相对位置，比如要拎起脖子之类的。正数往右")
         self.labels[7].setText("拖拽偏移X：")
-        self.inputBoxes[7].setToolTip("拖拽时坐标偏移，用于改变拖拽时宠物和鼠标的相对位置，比如要拎起脖子之类的。正数往右")
+        self.inputBoxes[7].setToolTip("请输入0到64之间的整数")
         self.labels[8].setToolTip("拖拽时坐标偏移，用于改变拖拽时宠物和鼠标的相对位置，比如要拎起脖子之类的。y正数往下")
         self.labels[8].setText("拖拽偏移Y：")
-        self.inputBoxes[8].setToolTip("拖拽时坐标偏移，用于改变拖拽时宠物和鼠标的相对位置，比如要拎起脖子之类的。y正数往下")
-        self.labels[9].setToolTip("字面意思")
+        self.inputBoxes[8].setToolTip("请输入0到64之间的整数")
+        self.labels[9].setToolTip("露米娅掉落时的初速度")
         self.labels[9].setText("掉落速度：")
-        self.inputBoxes[9].setToolTip("掉落速度")
+        self.inputBoxes[9].setToolTip("请输入1到100之间的整数")
 
         self.settingthrowout.setToolTip("是否可以往两边扔出去，打勾为允许")
         self.settingthrowout.setText("两边扔出")
-        self.settingintotray.setToolTip("是否可以往开始菜单里走，打勾为允许")
-        self.settingintotray.setText("进入菜单")
+        self.settingintotray.setToolTip("打勾后，高度将从整个屏幕底边起算，否则从工作栏上边起算")
+        self.settingintotray.setText("以屏幕底边为底")
         self.settingmirror.setToolTip("往右走的动画，使用往左走的动画的镜像，这样就只要画一组图了")
         self.settingmirror.setText("右走镜像")
         # self.QTabWidget1.setTabText(self.QTabWidget1.indexOf(), _translate("宠物设置"))

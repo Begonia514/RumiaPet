@@ -1,3 +1,4 @@
+import pyautogui
 from PIL import Image
 import configparser
 import os
@@ -108,3 +109,6 @@ class Config():
 
         #SettingUI校验
         self.settingUICheck = True
+
+        #(不可修改)显示屏长宽
+        self.SCREEN_WIDTH, self.SCREEN_HEIGHT = pyautogui.size()

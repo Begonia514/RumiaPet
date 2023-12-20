@@ -1,12 +1,7 @@
-import configparser
-
-import settingUI
-import webSettingUI
 from config import ConfigGetter
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from PIL import Image
 from webSettingUI import webWindow
 from settingUI import petWindow
 from style import Style
@@ -30,10 +25,8 @@ class Setting(QMainWindow):
         self.setWindowIcon(QIcon('./favicon.ico'))
         MainWindow.setObjectName("Rumia Setting")
         MainWindow.setFixedSize(800, 540)
-        self.centralwidget = QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
         self.QTabWidget1 = QTabWidget(self)
-        self.QTabWidget1.setGeometry(QRect(10, 0, 780, 460))
+        self.QTabWidget1.setGeometry(QRect(10, 5, 780, 460))
         font = QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -64,8 +57,17 @@ class Setting(QMainWindow):
         # setup webSetting
         self.setupWebSetting()
 
-        # self.QTabWidget1.currentChanged.connect(self.tabChanged)
+        # 设置 QTabWidget 为主窗口的中央控件
+        self.setCentralWidget(self.QTabWidget1)
 
+        # 使用样式表设置 QTabWidget 及其页面透明
+        self.QTabWidget1.setStyleSheet("QTabWidget {background: transparent;}"
+                                       "QTabWidget::pane {border: 0;}"
+                                       "QTabWidget::tab-bar {alignment: center;}"
+                                       "QTabBar::tab {background: transparent;}"
+                                       "QTabBar::tab:selected {background: #DCDCDC;}")
+
+        # self.QTabWidget1.currentChanged.connect(self.tabChanged)
 
     def saveAll(self):
         cfg = ConfigGetter()
