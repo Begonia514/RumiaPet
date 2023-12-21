@@ -8,6 +8,9 @@ Pillow == 9.2.0
 
 python == 3.10.6
 
+#### 字体下载：
+请双击 ./data/font/Lolita.ttf
+下载“萝莉体”
 
 
 #### 启动方法：
