@@ -5,14 +5,14 @@ class Style():
     # "QPushButton#defaultConfig"字段
     # 使该style只会覆盖对象下的类型为"QPushButton"并且名为"restorationConfig"的对象的style
     defaultConfigButton = "QPushButton#restorationConfig {" \
-                              "background-color: lightblue;"\
-                              "border: 2px solid darkblue;"\
+                              "background-color: #808080;"\
+                              "border: 2px solid #4B0082;"\
                               "border-radius: 5px;"\
                               "padding: 5px;"\
                               "}"
     defaultButton = "QPushButton {" \
-                    "background-color: lightblue;" \
-                    "border: 2px solid darkblue;" \
+                    "background-color: #808080;" \
+                    "border: 2px solid #4B0082;" \
                     "border-radius: 5px;" \
                     "padding: 5px;" \
                     "}"

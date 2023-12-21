@@ -1,10 +1,13 @@
+import settingUI
 from config import ConfigGetter
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from webSettingUI import webWindow
-from settingUI import petWindow
+from settingUI import Petwindow
 from style import Style
+
+
 class Setting(QMainWindow):
     _startPos = None
     _endPos = None
@@ -21,51 +24,27 @@ class Setting(QMainWindow):
         :param MainWindow: Setting的父类
         :return:
         '''
-        self.setWindowTitle("设置界面")
+        self.setWindowTitle("宠物设置界面")
         self.setWindowIcon(QIcon('./favicon.ico'))
-        MainWindow.setObjectName("Rumia Setting")
+        MainWindow.setObjectName("RumiaSetting")
         MainWindow.setFixedSize(800, 540)
-        self.QTabWidget1 = QTabWidget(self)
-        self.QTabWidget1.setGeometry(QRect(10, 5, 780, 460))
-        font = QFont()
+
+        self.settingUI = Petwindow()
+        self.settingUI.setParent(self)
+
+        font = QFont("萝莉体")
         font.setBold(True)
         font.setWeight(75)
-        self.QTabWidget1.setFont(font)
-        self.QTabWidget1.setMouseTracking(False)
-        self.QTabWidget1.setAutoFillBackground(False)
-        self.QTabWidget1.setObjectName("QTabWidget1")
 
-        # MainWindow.setCentralWidget(self.centralwidget)
-        # self.menubar = QMenuBar(MainWindow)
-        # self.menubar.setGeometry(QRect(0, 0, 757, 260))
-        # self.menubar.setObjectName("menubar")
-        # MainWindow.setMenuBar(self.menubar)
         self.saveAllButton = QPushButton(self)
         self.saveAllButton.setGeometry(QRect(650, 480, 120, 40))
         self.saveAllButton.setObjectName("save")
         self.saveAllButton.setStyleSheet(Style.defaultButton)
+        self.saveAllButton.setFont(font)
         self.saveAllButton.setText("全部保存")
         self.saveAllButton.clicked.connect(self.saveAll)
 
-
-        self.QTabWidget1.setCurrentIndex(0)
         QMetaObject.connectSlotsByName(MainWindow)
-
-        # setup petSetting
-        self.setupPetSetting()
-
-        # setup webSetting
-        self.setupWebSetting()
-
-        # 设置 QTabWidget 为主窗口的中央控件
-        self.setCentralWidget(self.QTabWidget1)
-
-        # 使用样式表设置 QTabWidget 及其页面透明
-        self.QTabWidget1.setStyleSheet("QTabWidget {background: transparent;}"
-                                       "QTabWidget::pane {border: 0;}"
-                                       "QTabWidget::tab-bar {alignment: center;}"
-                                       "QTabBar::tab {background: transparent;}"
-                                       "QTabBar::tab:selected {background: #DCDCDC;}")
 
         # self.QTabWidget1.currentChanged.connect(self.tabChanged)
 
@@ -85,27 +64,6 @@ class Setting(QMainWindow):
             info = QMessageBox(QMessageBox.Information, "提示", "存在不符合要求的输入")
             qyes = info.addButton(self.tr("确定"), QMessageBox.YesRole)
             info.exec_()
-
-
-    def setupPetSetting(self):
-        '''
-        用于建立“宠物设置”的栏
-        :return:
-        '''
-        self.petTab = petWindow()
-        self.petTab.setObjectName('petTab')
-        self.QTabWidget1.addTab(self.petTab,"宠物设置")
-        # self.currentChanged.connect(self.tabChange)
-
-    def setupWebSetting(self):
-        '''
-        用于建立“网站设置”的栏
-        :return:
-        '''
-        self.webTab = webWindow()
-        self.webTab.setObjectName("webTab")
-        self.QTabWidget1.addTab(self.webTab,"网站设置")
-
 
     def closeEvent(self, event):
         '''
@@ -149,6 +107,3 @@ class Setting(QMainWindow):
             self._isTracking = False
             self._startPos = None
             self._endPos = None
-
-
-

@@ -1,3 +1,5 @@
+import sys
+
 from components import checkers
 import config
 from style import Style
@@ -5,16 +7,20 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from config import ConfigGetter
-import os,configparser
+import os, configparser
 from PIL import Image
 
-class petWindow(QTabWidget):
-    def __init__(self):
-        super(petWindow, self).__init__()
-        # self.setStyleSheet("background-image: url(./data/rumia/background.png);"
-        #                         "background-color: rgba(255, 255, 255, 10);")
-        self.numberOfInput = 10
 
+class Petwindow(QWidget):
+    def __init__(self):
+        super(Petwindow, self).__init__()
+        self.setGeometry(0,0,800,540)
+        self.numberOfInput = 10
+        self.background_label = QWidget(self)
+        self.background_label.setGeometry(0,0,800,540)
+        self.background_label.setStyleSheet("background-image: url(./data/rumia/bkg36.png);"
+                                            "background-color: rgba(192, 192, 192, 10);"
+                                            "QWidget { border: none; }")
         self.initUI()
 
     def textChange(self):
@@ -37,27 +43,27 @@ class petWindow(QTabWidget):
 
         totalCheck = True
         for i in range(self.numberOfInput):
-            if checks[i]:
-                self.inputBoxes[i].setStyleSheet(
-                    "QLineEdit { border: none; border-radius: 4px; padding: 2px 10px;"
-                    " background: rgba(192, 192, 192, 90); }")
-                checks[i] = True
-            else:
-                self.inputBoxes[i].setStyleSheet(
-                    "QLineEdit { border: none; border-radius: 4px; padding: 2px 10px;"
-                    " background: rgba(255, 192, 203, 150); }")
-                checks[i] = False
-            totalCheck = totalCheck & checks[i]
+            if cfg.petSettingIsChange:
+                if checks[i]:
+                    self.inputBoxes[i].setStyleSheet(
+                        "QLineEdit { border: none; border-radius: 4px; padding: 2px 10px;"
+                        " background: rgba(192, 192, 192, 90); }")
+                    checks[i] = True
+                else:
+                    self.inputBoxes[i].setStyleSheet(
+                        "QLineEdit { border: none; border-radius: 4px; padding: 2px 10px;"
+                        " background: rgba(255, 192, 203, 150); }")
+                    checks[i] = False
+                totalCheck = totalCheck & checks[i]
 
-        cfg.petSettingIsChange=True
+        cfg.petSettingIsChange = True
 
         cfg.settingUICheck = totalCheck
 
 
-
-    def stateChange(self,state):
+    def stateChange(self, state):
         cfg = ConfigGetter()
-       # print(f"state:{state}")
+        # print(f"state:{state}")
         cfg.petSettingIsChange = True
 
     def initUI(self):
@@ -67,19 +73,23 @@ class petWindow(QTabWidget):
         '''
         cfg = ConfigGetter()
         cfg.petSettingIsChange = False
-
+        self.setObjectName("RumiaSetting")
+        #字体设置为萝莉体
+        font = QFont("萝莉体")
+        font.setBold(True)
+        font.setWeight(75)
         # 恢复默认按钮
         self.restorationConfig = QPushButton(self)
         self.restorationConfig.setGeometry(QRect(20, 370, 100, 33))
         self.restorationConfig.setObjectName("restorationConfig")
+        self.restorationConfig.setFont(font)
         self.restorationConfig.setStyleSheet(Style.defaultConfigButton)
         self.restorationConfig.clicked.connect(self.saveDefaultMsg)
 
+        #顶部提示
+        font.setWeight(50)
         self.tip = QLabel(self)
-        self.tip.setGeometry(QRect(10, 10, 431, 16))
-        font = QFont()
-        font.setBold(True)
-        font.setWeight(75)
+        self.tip.setGeometry(QRect(10, 10, 431, 32))
         self.tip.setFont(font)
         self.tip.setTextInteractionFlags(
             Qt.LinksAccessibleByMouse | Qt.TextSelectableByKeyboard | Qt.TextSelectableByMouse)
@@ -87,27 +97,25 @@ class petWindow(QTabWidget):
 
         self.labels = []
         self.inputBoxes = []
-        for i in range (self.numberOfInput):
+        for i in range(self.numberOfInput):
             self.labels.append(QLabel(self))
             self.inputBoxes.append(QLineEdit(self))
 
-        for i in range (self.numberOfInput):
-            font = QFont("萝莉体")
-            font.setBold(False)
+        for i in range(self.numberOfInput):
             font.setWeight(50)
             self.labels[i].setFont(font)
             self.labels[i].setTextInteractionFlags(
                 Qt.LinksAccessibleByMouse | Qt.TextSelectableByKeyboard | Qt.TextSelectableByMouse)
-            self.labels[i].setObjectName("label_"+str(i))
+            self.labels[i].setObjectName("label_" + str(i))
 
-            self.inputBoxes[i].setObjectName("input_"+str(i))
+            self.inputBoxes[i].setObjectName("input_" + str(i))
             self.inputBoxes[i].setStyleSheet(
                 "QLineEdit { border: none; border-radius: 4px; padding: 2px 10px;"
                 " background: rgba(128, 128, 128, 150); }")
             self.inputBoxes[i].textChanged.connect(self.textChange)
-#######################
-# 各个组件位置和细节设置  #
-#######################
+        #######################
+        # 各个组件位置和细节设置  #
+        #######################
         self.labels[0].setGeometry(QRect(10, 70, 101, 21))
         self.inputBoxes[0].setGeometry(QRect(110, 70, 113, 21))
 
@@ -138,12 +146,8 @@ class petWindow(QTabWidget):
         self.labels[9].setGeometry(QRect(10, 310, 101, 21))
         self.inputBoxes[9].setGeometry(QRect(110, 310, 113, 21))
 
-
         self.settingthrowout = QCheckBox(self)
         self.settingthrowout.setGeometry(QRect(560, 70, 113, 21))
-        font = QFont()
-        font.setBold(False)
-        font.setWeight(50)
         self.settingthrowout.setFont(font)
         self.settingthrowout.setIconSize(QSize(20, 20))
         self.settingthrowout.setObjectName("settingthrowout")
@@ -151,22 +155,15 @@ class petWindow(QTabWidget):
 
         self.settingintotray = QCheckBox(self)
         self.settingintotray.setGeometry(QRect(560, 190, 160, 21))
-        font = QFont()
-        font.setBold(False)
-        font.setWeight(50)
         self.settingintotray.setFont(font)
         self.settingintotray.setObjectName("settingintotray")
         self.settingintotray.stateChanged.connect(self.stateChange)
 
         self.settingmirror = QCheckBox(self)
         self.settingmirror.setGeometry(QRect(560, 310, 113, 21))
-        font = QFont()
-        font.setBold(False)
-        font.setWeight(50)
         self.settingmirror.setFont(font)
         self.settingmirror.setObjectName("settingmirror")
         self.settingmirror.stateChanged.connect(self.stateChange)
-
 
         self.retranslateUi()
 
@@ -183,7 +180,8 @@ class petWindow(QTabWidget):
         self.inputBoxes[0].setToolTip("请输入0.5到1.0之间的一位小数")
         self.labels[1].setToolTip("露米娅距离底部工作栏的高度")
         self.labels[1].setText("桌宠高度：")
-        self.inputBoxes[1].setToolTip("请输入0到"+ str(config.ConfigGetter().SCREEN_HEIGHT) + "之间的整数，注意不要超过自己的屏幕分辨率哦")
+        self.inputBoxes[1].setToolTip(
+            "请输入0到" + str(config.ConfigGetter().SCREEN_HEIGHT) + "之间的整数，注意不要超过自己的屏幕分辨率哦")
         self.labels[2].setToolTip("丢出露米娅后她的水平速度")
         self.labels[2].setText("水平扔出：")
         self.inputBoxes[2].setToolTip("请输入0.0到4.0之间的一位小数")
@@ -217,7 +215,6 @@ class petWindow(QTabWidget):
         self.settingmirror.setText("右走镜像")
         # self.QTabWidget1.setTabText(self.QTabWidget1.indexOf(), _translate("宠物设置"))
 
-
     def readcfg(self, MainWindow):
         cfg = ConfigGetter()
         self.inputBoxes[0].setText(str(cfg.petscale))
@@ -230,7 +227,6 @@ class petWindow(QTabWidget):
         self.inputBoxes[3].setText(str(cfg.fixdragspeedy))
         self.inputBoxes[4].setText(str(cfg.gravity))
         self.inputBoxes[9].setText(str(cfg.dropspeed))
-
 
         if cfg.throwout == "True":
             self.settingthrowout.setChecked(True)
@@ -246,7 +242,6 @@ class petWindow(QTabWidget):
             self.settingmirror.setChecked(True)
         else:
             self.settingmirror.setChecked(False)
-
 
     def savecfg2(self):
         cfg = ConfigGetter()
@@ -268,7 +263,7 @@ class petWindow(QTabWidget):
         petconfig.set("config", "mirror", str(self.settingmirror.isChecked()))
         petconfig.write(open(cfg.petconfigpath, "w", encoding="utf-8-sig"))
 
-        if str(cfg.petscale) != self.inputBoxes[0].text() :
+        if str(cfg.petscale) != self.inputBoxes[0].text():
             cfg.ischangescale = 1
 
         self.loadpetconfig()
@@ -304,7 +299,7 @@ class petWindow(QTabWidget):
         petconfig.set("config", "mirror", 'True')
         petconfig.write(open(cfg.petconfigpath, "w", encoding="utf-8-sig"))
 
-        if str(cfg.petscale) != '1.0' :
+        if str(cfg.petscale) != '1.0':
             cfg.ischangescale = 1
 
         self.loadpetconfig()
@@ -364,3 +359,10 @@ class petWindow(QTabWidget):
         cfg.im = Image.open(cfg.image)
         cfg.petwidth = int(cfg.im.size[0] * cfg.petscale)
         cfg.petheight = int(cfg.im.size[1] * cfg.petscale)
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    pet = Petwindow()
+    pet.show()
+    app.exec_()
+
