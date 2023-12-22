@@ -289,7 +289,12 @@ class App(QWidget):
                 QAction(name, self, triggered=(lambda _, url=url: webbrowser.open(url)))
             )
         menu.addMenu(webMenu)
-        menu.addAction(QAction(QIcon('./data/icon/settings.png'), '设置', self, triggered=self.setting))
+
+        settingMenu = QMenu('settingMenu')
+        settingMenu.setTitle('设置')
+        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.setting))
+        # settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站设置', self ,triggered=self.))
+        menu.addMenu(settingMenu)
         menu.addAction(QAction(QIcon('./data/icon/close.png'), '退出', self, triggered=self.playQuit))
 
         menu.exec_(QCursor.pos())
@@ -391,8 +396,11 @@ class App(QWidget):
         menu.addAction(QAction(QIcon('./data/icon/deviceoff.png'), '禁用掉落', self, triggered=self.dropoff))
 
         menu.addSeparator()
-        menu.addAction(QAction(QIcon('./data/icon/settings.png'), '设置', self, triggered=self.setting))
-        menu.addAction(QAction(QIcon('./data/icon/close.png'), '退出', self, triggered=self.playQuit))
+        settingMenu = QMenu('settingMenu', self)
+        settingMenu.setTitle('设置')
+        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.setting))
+        # settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站设置', self ,triggered=self.))
+        menu.addMenu(settingMenu)
         
         tray.setContextMenu(menu)
         tray.show()
