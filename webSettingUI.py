@@ -134,7 +134,7 @@ class WebWindow(QTabWidget):
 
         self.listWidget = QListWidget(self)
         self.listWidget.setFont(font)
-        self.listWidget.setStyleSheet("background-color: transparent;")
+        self.listWidget.setStyleSheet("background-color: rgba(255, 255, 255, 128);")
         self.listWidget.itemChanged.connect(self.itemChanged)
         self.listWidget.setAcceptDrops(True)
         self.listWidget.setDragDropMode(QListWidget.InternalMove)
