@@ -18,3 +18,10 @@ class Style():
                     "}"
 
     manageQList = "QListWidget::indicator:checked { right: 10px; }"
+
+    deleteButton = "QPushButton {" \
+                    "background-color: pink;" \
+                    "border: 2px solid #4B0082;" \
+                    "border-radius: 5px;" \
+                    "padding: 5px;" \
+                    "}"
