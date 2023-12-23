@@ -25,7 +25,7 @@ class scheduleList(QListWidget):
 
             newItem.setSizeHint(QSize(newItem.sizeHint().width(), cfg.scheduleItemHeight))  # 设置Item的高度
             # 设置Item内部字体大小
-            font = QFont("SimSun", 14)  # 设置字体大小
+            font = QFont("萝莉体", 14)  # 设置字体大小
             font.setBold(False)
             newItem.setFont(font)
 
@@ -77,7 +77,7 @@ class ItemDialog(QDialog):
         self.describeEdit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # 设置字体大小
-        font = QFont()
+        font = QFont('萝莉体')
         font.setPointSize(14)  # 设置字体大小
         self.titleEdit.setFont(font)
         self.describeEdit.setFont(font)
@@ -132,20 +132,23 @@ class TodoApp(QWidget):
         cfg = ConfigGetter()
         cfg.scheduleIsChange = False
         self.manageMode = False
+        self.setWindowIcon(QIcon('./favicon.ico'))
         # self.setGeometry(300, 300, 400, 400)
         self.resize(500, 600)
         self.setWindowTitle('待办日程')
 
 
-        font = QFont()
+        font = QFont('萝莉体')
         font.setBold(True)
         font.setWeight(75)
         self.tipLabel = QLabel('拖拽或勾选，双击每一项以编辑', self)
         self.tipLabel.setFont(font)
 
         self.manageButton = QPushButton('管理', self)
+        self.manageButton.setStyleSheet(Style.defaultButton)
         self.manageButton.setFixedWidth(80)
         self.manageButton.clicked.connect(self.toggleManagementMode)
+        self.manageButton.setFont(font)
 
 
         self.deleteButton = QPushButton('删除', self)
@@ -154,6 +157,7 @@ class TodoApp(QWidget):
         self.deleteButton.setStyleSheet("background-color: pink;")
         self.deleteButton.setEnabled(False)
         self.deleteButton.setVisible(False)
+        self.deleteButton.setFont(font)
 
         ceilingHbox = QHBoxLayout()
         ceilingHbox.addWidget(self.tipLabel)
@@ -186,6 +190,8 @@ class TodoApp(QWidget):
         self.doneListWidget.setDragDropMode(QListWidget.DragDrop)
         self.doneListWidget.setDefaultDropAction(Qt.MoveAction)
         self.doneListWidget.itemChanged.connect(self.itemChanged)
+        text_color = QColor(200, 200, 200, 128)
+        self.doneListWidget.setStyleSheet(f"QListWidget {{ color: {text_color.name()}; }}")
 
         # self.doneListWidget.itemDropped.connect(self.doneDrop)
 
@@ -195,12 +201,14 @@ class TodoApp(QWidget):
 
         # 添加按钮
         self.addButton = QPushButton('添加待办')
+        self.addButton.setFont(font)
         self.addButton.clicked.connect(self.addTodoItem)
         self.addButton.setStyleSheet(Style.defaultButton)
 
         self.saveButton = QPushButton('保存修改')
+        self.saveButton.setFont(font)
         self.saveButton.clicked.connect(self.saveToCSV)
-        # self.saveButton.setStyleSheet(Style.defaultButton)
+        self.saveButton.setStyleSheet(Style.defaultButton)
 
 
         # 布局
@@ -274,6 +282,7 @@ class TodoApp(QWidget):
             self.manageMode = False
             self.tipLabel.setText('拖拽或勾选，双击每一项以编辑')
             self.manageButton.setText('管理')
+            self.manageButton.setFont(QFont('萝莉体'))
             self.addButton.setEnabled(True)
             self.saveButton.setEnabled(True)
             self.deleteButton.setEnabled(False)
@@ -281,9 +290,13 @@ class TodoApp(QWidget):
 
 
     def deleteSelectedItems(self):
+        font = QFont('萝莉体')
         reply = QMessageBox(QMessageBox.Question, "删除日程", "确认要将删除此项日程吗？")
+        reply.setFont(font)
         qyes = reply.addButton(self.tr("确定"), QMessageBox.YesRole)
         qno = reply.addButton(self.tr("取消"), QMessageBox.NoRole)
+        qyes.setFont(font)
+        qno.setFont(font)
         reply.exec_()
         if reply.clickedButton() == qno:
             return
@@ -340,7 +353,7 @@ class TodoApp(QWidget):
         newItem.setSizeHint(QSize(newItem.sizeHint().width(), cfg.scheduleItemHeight))  # 设置Item的高度
         newItem.setCheckState(item.checkState())
         # 设置Item内部字体大小
-        font = QFont("SimSun", 14)  # 设置字体大小
+        font = QFont("萝莉体", 14)  # 设置字体大小
         font.setBold(False)
         newItem.setFont(font)
 
@@ -379,7 +392,7 @@ class TodoApp(QWidget):
                     item = QListWidgetItem(row[0])
                     item.setData(Qt.UserRole, row[1])
                     item.setSizeHint(QSize(item.sizeHint().width(), cfg.scheduleItemHeight))
-                    font = QFont("SimSun", 14)  # 设置字体大小
+                    font = QFont("萝莉体", 14)  # 设置字体大小
                     font.setBold(False)
                     item.setFont(font)
                     item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
@@ -439,10 +452,11 @@ class TodoApp(QWidget):
         describeEdit.setPlaceholderText('描述')
 
         # 设置字体大小
-        font = QFont()
+        font = QFont('萝莉体')
         font.setPointSize(14)
         titleEdit.setFont(font)
         describeEdit.setFont(font)
+        dialog.setFont(font)
 
         formLayout = QFormLayout()
         formLayout.addRow('标题:', titleEdit)
@@ -474,7 +488,7 @@ class TodoApp(QWidget):
             todoItem = QListWidgetItem(title)
             todoItem.setData(Qt.UserRole, describe)
             todoItem.setSizeHint(QSize(todoItem.sizeHint().width(), cfg.scheduleItemHeight))
-            font = QFont("SimSun", 14)  # 设置字体大小
+            font = QFont("萝莉体", 14)  # 设置字体大小
             font.setBold(False)
             todoItem.setFont(font)
             todoItem.setFlags(todoItem.flags() | Qt.ItemIsUserCheckable)
