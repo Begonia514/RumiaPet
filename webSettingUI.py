@@ -141,8 +141,10 @@ class WebWindow(QTabWidget):
 
         self.listWidget = QListWidget(self)
         self.listWidget.setFont(font)
-        self.listWidget.setStyleSheet("background-color: rgba(255, 255, 255, 128);"
-                                      "QListWidget::item { border: 2px solid black; border-radius: 5px; }" ) #! 这一行失效，原因未知
+        self.listWidget.setStyleSheet(  "QListWidget {" \
+                                        "background-color: rgba(255, 255, 255, 128);" \
+                                        "}" \
+                                        "QListWidget::item { background-color: lightblue; border: 2px solid black; border-radius: 5px; }")
         print(self.listWidget.styleSheet())
         self.listWidget.itemChanged.connect(self.itemChanged)
         self.listWidget.setAcceptDrops(True)
@@ -227,10 +229,7 @@ class WebWindow(QTabWidget):
                     font = QFont("萝莉体", 14)  # 设置字体大小
                     font.setBold(False)
                     item.setFont(font)
-                    line = QListWidgetItem("-------------------------------------------------------------------------------------------------------------------------------------------------------")
-                    line.setSizeHint(QSize(item.sizeHint().width(), 3))
                     self.listWidget.addItem(item)
-                    self.listWidget.addItem(line)
         except FileNotFoundError:
             pass
 
