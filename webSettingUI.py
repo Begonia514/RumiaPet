@@ -148,7 +148,8 @@ class WebWindow(QTabWidget):
 
         # 添加按钮
         self.addButton = QPushButton('添加项', self)
-        self.addButton.setGeometry(QRect(20, 370, 100, 33))
+        #self.addButton.setGeometry(QRect(50, 480, 120, 40))
+        self.addButton.setFixedSize(120, 40)
         self.addButton.setObjectName("restorationConfig")
         self.addButton.setFont(font)
         self.addButton.clicked.connect(self.addWebItem)

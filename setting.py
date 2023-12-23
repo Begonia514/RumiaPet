@@ -137,7 +137,7 @@ class WebSetting(QMainWindow):
         font.setWeight(75)
 
         self.saveAllButton = QPushButton(self)
-        self.saveAllButton.setGeometry(QRect(650, 480, 120, 40))
+        self.saveAllButton.setGeometry(QRect(650, 487, 120, 40))
         self.saveAllButton.setObjectName("save")
         self.saveAllButton.setStyleSheet(Style.defaultButton)
         self.saveAllButton.setFont(font)
