@@ -89,9 +89,16 @@ class webList(QListWidget):
             super().dropEvent(event)
         except Exception as e:
             print(e)
-class webWindow(QTabWidget):
+
+class WebWindow(QTabWidget):
     def __init__(self):
-        super(webWindow, self).__init__()
+        super(WebWindow, self).__init__()
+        self.setGeometry(0,0,800,540)
+        self.background_label = QWidget(self)
+        self.background_label.setGeometry(0,0,800,540)
+        self.background_label.setStyleSheet("background-image: url(./data/rumia/bkg36.png);"
+                                            "background-color: rgba(192, 192, 192, 10);"
+                                            "QWidget { border: none; }")
 
         self.initUI()
 
@@ -111,20 +118,23 @@ class webWindow(QTabWidget):
         :return:
         '''
         cfg = ConfigGetter()
-
         cfg.webSettingIsChange = False
+        self.setObjectName('RumiaSetting')
         # self.setWindowTitle('Item交换与编辑')
-        self.setGeometry(300, 300, 400, 400)
 
 
-        font = QFont()
+        font = QFont('萝莉体')
         font.setBold(True)
         font.setWeight(75)
+
+        # 顶部提示
         self.tipLabel = QLabel('双击每一项以编辑', self)
         self.tipLabel.setFont(font)
 
 
         self.listWidget = QListWidget(self)
+        self.listWidget.setFont(font)
+        self.listWidget.setStyleSheet("background-color: transparent;")
         self.listWidget.itemChanged.connect(self.itemChanged)
         self.listWidget.setAcceptDrops(True)
         self.listWidget.setDragDropMode(QListWidget.InternalMove)
@@ -136,9 +146,13 @@ class webWindow(QTabWidget):
 
         self.loadItemsFromCSV()  # 从CSV文件加载数据
 
-        self.addButton = QPushButton('添加项')
+        # 添加按钮
+        self.addButton = QPushButton('添加项', self)
+        self.addButton.setGeometry(QRect(20, 370, 100, 33))
+        self.addButton.setObjectName("restorationConfig")
+        self.addButton.setFont(font)
         self.addButton.clicked.connect(self.addWebItem)
-        self.addButton.setStyleSheet(Style.defaultButton)
+        self.addButton.setStyleSheet(Style.defaultConfigButton)
         self.addButton.setFixedHeight(40)
 
         # self.saveButton = QPushButton('保存')
@@ -157,6 +171,7 @@ class webWindow(QTabWidget):
 
     def closeEvent(self):
         print('webTab Close')
+
     def addWebItem(self):
         cfg = ConfigGetter()
         cfg.webSettingIsChange = True
@@ -239,7 +254,7 @@ if __name__ == '__main__':
     palette.setColor(QPalette.Window, QColor(173, 216, 230, 150))  # 天蓝色半透明背景
     app.setPalette(palette)
 
-    mainWindow = webWindow()
+    mainWindow = WebWindow()
     mainWindow.show()
 
     sys.exit(app.exec_())

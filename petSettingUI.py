@@ -86,7 +86,7 @@ class Petwindow(QWidget):
         self.restorationConfig.setStyleSheet(Style.defaultConfigButton)
         self.restorationConfig.clicked.connect(self.saveDefaultMsg)
 
-        #顶部提示
+        # 顶部提示
         font.setWeight(50)
         self.tip = QLabel(self)
         self.tip.setGeometry(QRect(10, 10, 431, 32))

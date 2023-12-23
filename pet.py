@@ -292,8 +292,8 @@ class App(QWidget):
 
         settingMenu = QMenu('settingMenu')
         settingMenu.setTitle('设置')
-        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.setting))
-        # settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站设置', self ,triggered=self.))
+        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.petSetting))
+        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站设置', self ,triggered=self.webSetting))
         menu.addMenu(settingMenu)
         menu.addAction(QAction(QIcon('./data/icon/close.png'), '退出', self, triggered=self.playQuit))
 
@@ -398,9 +398,10 @@ class App(QWidget):
         menu.addSeparator()
         settingMenu = QMenu('settingMenu', self)
         settingMenu.setTitle('设置')
-        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.setting))
-        # settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站设置', self ,triggered=self.))
+        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.petSetting))
+        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站设置', self ,triggered=self.webSetting))
         menu.addMenu(settingMenu)
+        menu.addAction(QAction(QIcon('./data/icon/close.png'), '退出', self, triggered=self.playQuit))
         
         tray.setContextMenu(menu)
         tray.show()
@@ -409,13 +410,20 @@ class App(QWidget):
     def schedule(self):
         self.scheduleWindow = TodoApp()
         self.scheduleWindow.show()
-    def setting(self):
+    def petSetting(self):
         '''
-        打开详细设置菜单
+        打开宠物设置菜单
         :return:
         '''
-        self.settingMenu = Setting()
+        self.settingMenu = PetSetting()
         # self.settingMenu.isChange = False
+        self.settingMenu.show()
+    def webSetting(self):
+        '''
+        打开网站设置菜单
+        :return:
+        '''
+        self.settingMenu = WebSetting()
         self.settingMenu.show()
         
     def drop(self):
