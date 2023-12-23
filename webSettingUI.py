@@ -35,19 +35,22 @@ class ItemDialog(QDialog):
         self.urlEdit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # 设置字体大小
-        font = QFont()
+        font = QFont('萝莉体')
         font.setPointSize(14)  # 设置字体大小
         self.nameEdit.setFont(font)
         self.urlEdit.setFont(font)
 
         okButton = QPushButton('确定')
         okButton.clicked.connect(self.accept)
+        okButton.setFont(font)
 
         deleteButton = QPushButton('删除')
         deleteButton.clicked.connect(self.deleteItem)
+        deleteButton.setFont(font)
 
         cancelButton = QPushButton('取消')
         cancelButton.clicked.connect(self.reject)
+        cancelButton.setFont(font)
 
         hbox = QHBoxLayout()
         hbox.addWidget(okButton)
@@ -69,9 +72,13 @@ class ItemDialog(QDialog):
         :return:
         '''
         cfg = ConfigGetter()
+        font = QFont('萝莉体')
         reply = QMessageBox(QMessageBox.Question, "删除收藏", "确认要将删除此项收藏吗？")
         qyes = reply.addButton(self.tr("确定"), QMessageBox.YesRole)
         qno = reply.addButton(self.tr("取消"), QMessageBox.NoRole)
+        reply.setFont(font)
+        qyes.setFont(font)
+        qno.setFont(font)
         reply.exec_()
         if reply.clickedButton() == qyes:
             cfg.webSettingIsChange = True
@@ -134,7 +141,7 @@ class WebWindow(QTabWidget):
 
         self.listWidget = QListWidget(self)
         self.listWidget.setFont(font)
-        self.listWidget.setStyleSheet("background-color: rgba(255, 255, 255, 128);")
+        self.listWidget.setStyleSheet("background-color: rgba(255, 255, 255, 128); font: lolita;")
         self.listWidget.itemChanged.connect(self.itemChanged)
         self.listWidget.setAcceptDrops(True)
         self.listWidget.setDragDropMode(QListWidget.InternalMove)
@@ -215,7 +222,7 @@ class WebWindow(QTabWidget):
                     item = QListWidgetItem(row[0])
                     item.setData(Qt.UserRole, row[1])
                     item.setSizeHint(QSize(item.sizeHint().width(), cfg.webItemHeight))
-                    font = QFont("SimSun", 14)  # 设置字体大小
+                    font = QFont("萝莉体", 14)  # 设置字体大小
                     font.setBold(False)
                     item.setFont(font)
                     self.listWidget.addItem(item)

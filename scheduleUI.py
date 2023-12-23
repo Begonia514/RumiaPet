@@ -136,6 +136,9 @@ class TodoApp(QWidget):
         # self.setGeometry(300, 300, 400, 400)
         self.resize(500, 600)
         self.setWindowTitle('待办日程')
+        self.background_label = QWidget(self)
+        self.background_label.setGeometry(0, 0, 500, 600)
+        self.background_label.setStyleSheet("background-color: rgba(27, 29, 68, 127);")
 
 
         font = QFont('萝莉体')
@@ -154,10 +157,10 @@ class TodoApp(QWidget):
         self.deleteButton = QPushButton('删除', self)
         self.deleteButton.setFixedWidth(80)
         self.deleteButton.clicked.connect(self.deleteSelectedItems)
-        self.deleteButton.setStyleSheet("background-color: pink;")
         self.deleteButton.setEnabled(False)
         self.deleteButton.setVisible(False)
         self.deleteButton.setFont(font)
+        self.deleteButton.setStyleSheet(Style.defaultButton)
 
         ceilingHbox = QHBoxLayout()
         ceilingHbox.addWidget(self.tipLabel)
