@@ -144,7 +144,7 @@ class WebWindow(QTabWidget):
         self.listWidget.setStyleSheet(  "QListWidget {" \
                                         "background-color: rgba(255, 255, 255, 128);" \
                                         "}" \
-                                        "QListWidget::item { background-color: lightblue; border: 2px solid black; border-radius: 5px; }")
+                                        "QListWidget::item { background-color: rgba(63, 63, 63, 63); border: 2px solid black; border-radius: 5px; }")
         print(self.listWidget.styleSheet())
         self.listWidget.itemChanged.connect(self.itemChanged)
         self.listWidget.setAcceptDrops(True)
