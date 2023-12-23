@@ -182,6 +182,7 @@ class TodoApp(QWidget):
         self.todoListWidget.setDragDropMode(QListWidget.DragDrop)
         self.todoListWidget.setDefaultDropAction(Qt.MoveAction)
         self.todoListWidget.itemChanged.connect(self.itemChanged)
+        #self.todoListWidget.setStyleSheet("QListWidget::item { border: 1px solid black; border-radius: 5px; }")
 
         # self.todoListWidget.itemDropped.connect(self.todoDrop)
 
@@ -194,7 +195,7 @@ class TodoApp(QWidget):
         self.doneListWidget.setDefaultDropAction(Qt.MoveAction)
         self.doneListWidget.itemChanged.connect(self.itemChanged)
         text_color = QColor(200, 200, 200, 128)
-        self.doneListWidget.setStyleSheet(f"QListWidget {{ color: {text_color.name()}; }}")
+        self.doneListWidget.setStyleSheet(f"QListWidget {{ color: {text_color.name()}; }};")
 
         # self.doneListWidget.itemDropped.connect(self.doneDrop)
 
