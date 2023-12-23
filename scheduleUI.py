@@ -160,7 +160,7 @@ class TodoApp(QWidget):
         self.deleteButton.setEnabled(False)
         self.deleteButton.setVisible(False)
         self.deleteButton.setFont(font)
-        self.deleteButton.setStyleSheet(Style.defaultButton)
+        self.deleteButton.setStyleSheet(Style.deleteButton)
 
         ceilingHbox = QHBoxLayout()
         ceilingHbox.addWidget(self.tipLabel)
