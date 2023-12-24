@@ -110,7 +110,7 @@ class Config():
         #SettingUI校验
         self.settingUICheck = True
 
-        self.maxWebItem = 15
+        self.maxWebItem = 12
 
         #(不可修改)显示屏长宽
         self.SCREEN_WIDTH, self.SCREEN_HEIGHT = pyautogui.size()

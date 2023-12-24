@@ -300,8 +300,25 @@ class TodoApp(QWidget):
         font = QFont('萝莉体')
         todoLen = self.todoListWidget.count()
         doneLen = self.doneListWidget.count()
+        selectCnt = 0
+        index = 0
+        while index < todoLen:
+            item = self.todoListWidget.item(index)
+            print(item.text())
+            print(item.checkState())
+            if item.checkState() == Qt.Checked:
+                selectCnt+=1
+            index += 1
+        index = 0
+        while index < doneLen:
+            item = self.doneListWidget.item(index)
+            print(item.text())
+            print(item.checkState())
+            if item.checkState() == Qt.Checked:
+                selectCnt += 1
+            index += 1
 
-        if todoLen+doneLen <= 0 :
+        if selectCnt <= 0 :
             info = QMessageBox(QMessageBox.Information, "提示", "请进行勾选再删除！")
             info.setFont(font)
             qyes = info.addButton(self.tr("好的"), QMessageBox.YesRole)
@@ -309,7 +326,7 @@ class TodoApp(QWidget):
             return
 
 
-        reply = QMessageBox(QMessageBox.Question, "删除日程", "确认要将删除此项日程吗？")
+        reply = QMessageBox(QMessageBox.Question, "删除日程", "确认要将删除所选日程吗？")
         reply.setFont(font)
         qyes = reply.addButton(self.tr("确定"), QMessageBox.YesRole)
         qno = reply.addButton(self.tr("取消"), QMessageBox.NoRole)
@@ -320,13 +337,13 @@ class TodoApp(QWidget):
         if reply.clickedButton() == qno :
             return
 
+        cfg.scheduleIsChange = True
         hasDel = 0
         index = 0
         while index-hasDel<todoLen:
             item = self.todoListWidget.item(index-hasDel)
-            itemList = self.todoListWidget.item
-            print(item.text())
-            print(item.checkState())
+            # print(item.text())
+            # print(item.checkState())
             if item.checkState() == Qt.Checked:
                 self.todoListWidget.takeItem(index-hasDel)
                 todoLen -= 1;hasDel += 1
