@@ -11,6 +11,8 @@ class scheduleList(QListWidget):
         super(scheduleList, self).__init__(parent)
 
     def dropEvent(self, event):
+        cfg = ConfigGetter()
+        cfg.scheduleIsChange = True
         if event.source() and event.source().objectName() != self.objectName():
             cfg = ConfigGetter()
 
@@ -54,11 +56,11 @@ class ItemDialog(QDialog):
 
     def initUI(self):
         '''
-        用于建立编辑收藏项的UI
+        用于建立编辑日程的UI
         :return:
         '''
         cfg = ConfigGetter()
-        cfg.scheduleIsChange = False
+        # cfg.scheduleIsChange = False
         self.setWindowTitle('编辑日程')
         self.setGeometry(300, 300, 300, 150)
 
@@ -294,7 +296,19 @@ class TodoApp(QWidget):
 
 
     def deleteSelectedItems(self):
+        cfg = ConfigGetter()
         font = QFont('萝莉体')
+        todoLen = self.todoListWidget.count()
+        doneLen = self.doneListWidget.count()
+
+        if todoLen+doneLen <= 0 :
+            info = QMessageBox(QMessageBox.Information, "提示", "请进行勾选再删除！")
+            info.setFont(font)
+            qyes = info.addButton(self.tr("好的"), QMessageBox.YesRole)
+            info.exec_()
+            return
+
+
         reply = QMessageBox(QMessageBox.Question, "删除日程", "确认要将删除此项日程吗？")
         reply.setFont(font)
         qyes = reply.addButton(self.tr("确定"), QMessageBox.YesRole)
@@ -302,16 +316,15 @@ class TodoApp(QWidget):
         qyes.setFont(font)
         qno.setFont(font)
         reply.exec_()
-        if reply.clickedButton() == qno:
+
+        if reply.clickedButton() == qno :
             return
 
-
-        todoLen = self.todoListWidget.count()
-        doneLen = self.doneListWidget.count()
         hasDel = 0
         index = 0
-        while index<todoLen:
-            item = self.todoListWidget.item(index)
+        while index-hasDel<todoLen:
+            item = self.todoListWidget.item(index-hasDel)
+            itemList = self.todoListWidget.item
             print(item.text())
             print(item.checkState())
             if item.checkState() == Qt.Checked:
@@ -321,8 +334,8 @@ class TodoApp(QWidget):
 
         hasDel = 0
         index = 0
-        while index<doneLen:
-            item = self.doneListWidget.item(index)
+        while index-hasDel<doneLen:
+            item = self.doneListWidget.item(index-hasDel)
             if item.checkState() == Qt.Checked:
                 self.doneListWidget.takeItem(index-hasDel)
                 doneLen -= 1;hasDel += 1
@@ -427,12 +440,14 @@ class TodoApp(QWidget):
         except FileNotFoundError as e:
             QMessageBox.critical(self, '发生错误', f'发生了一个错误:\n{type(e).__name__}: {str(e)}')
             return
-
+        font = QFont('萝莉体')
         info = QMessageBox(QMessageBox.Information, "提示", "修改成功！")
+        info.setFont(font)
         qyes = info.addButton(self.tr("确定"), QMessageBox.YesRole)
         info.exec_()
     def saveItemsToCSV(self,items,path):
         cfg = ConfigGetter()
+        cfg.scheduleIsChange = False
         cfg.scheduleIsChange = False
         try:
             with open(path, 'w', newline='', encoding='utf-8') as csvfile:
@@ -533,8 +548,9 @@ class TodoApp(QWidget):
             self.hide()
             event.ignore()
             return
-
+        font = QFont("萝莉体")
         reply = QMessageBox(QMessageBox.Question, "修改未保存", "有修改但未保存，确定要退出吗？")
+        reply.setFont(font)
         qyes = reply.addButton(self.tr("确定"), QMessageBox.YesRole)
         qno = reply.addButton(self.tr("取消"), QMessageBox.NoRole)
         reply.exec_()

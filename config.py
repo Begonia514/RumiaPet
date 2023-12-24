@@ -103,12 +103,14 @@ class Config():
         self.hiding = 0
         self.hidden = 0
 
-        self.petSettingIsChange = False
+        # self.petSettingIsChange = False
         self.webSettingIsChange = False
         self.scheduleIsChange = False
 
         #SettingUI校验
         self.settingUICheck = True
+
+        self.maxWebItem = 3
 
         #(不可修改)显示屏长宽
         self.SCREEN_WIDTH, self.SCREEN_HEIGHT = pyautogui.size()

@@ -293,7 +293,7 @@ class App(QWidget):
         settingMenu = QMenu('settingMenu')
         settingMenu.setTitle('设置')
         settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.petSetting))
-        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站设置', self ,triggered=self.webSetting))
+        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站收藏管理', self ,triggered=self.webSetting))
         menu.addMenu(settingMenu)
         menu.addAction(QAction(QIcon('./data/icon/close.png'), '退出', self, triggered=self.playQuit))
 
@@ -399,7 +399,7 @@ class App(QWidget):
         settingMenu = QMenu('settingMenu', self)
         settingMenu.setTitle('设置')
         settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.petSetting))
-        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站设置', self ,triggered=self.webSetting))
+        settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站收藏管理', self ,triggered=self.webSetting))
         menu.addMenu(settingMenu)
         menu.addAction(QAction(QIcon('./data/icon/close.png'), '退出', self, triggered=self.playQuit))
         

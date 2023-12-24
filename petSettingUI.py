@@ -14,6 +14,7 @@ from PIL import Image
 class Petwindow(QWidget):
     def __init__(self):
         super(Petwindow, self).__init__()
+        self.isChange = False
         self.setGeometry(0,0,800,540)
         self.numberOfInput = 10
         self.background_label = QWidget(self)
@@ -43,7 +44,7 @@ class Petwindow(QWidget):
 
         totalCheck = True
         for i in range(self.numberOfInput):
-            if cfg.petSettingIsChange:
+            if self.isChange:
                 if checks[i]:
                     self.inputBoxes[i].setStyleSheet(
                         "QLineEdit { border: none; border-radius: 4px; padding: 2px 10px;"
@@ -56,7 +57,7 @@ class Petwindow(QWidget):
                     checks[i] = False
                 totalCheck = totalCheck & checks[i]
 
-        cfg.petSettingIsChange = True
+        self.isChange = True
 
         cfg.settingUICheck = totalCheck
 
@@ -64,7 +65,7 @@ class Petwindow(QWidget):
     def stateChange(self, state):
         cfg = ConfigGetter()
         # print(f"state:{state}")
-        cfg.petSettingIsChange = True
+        self.isChange = True
 
     def initUI(self):
         '''
@@ -72,7 +73,7 @@ class Petwindow(QWidget):
         :return:
         '''
         cfg = ConfigGetter()
-        cfg.petSettingIsChange = False
+        self.isChange = False
         self.setObjectName("RumiaSetting")
         #字体设置为萝莉体
         font = QFont("萝莉体")
@@ -168,7 +169,7 @@ class Petwindow(QWidget):
         self.retranslateUi()
 
         self.readcfg(self)
-        cfg.petSettingIsChange = False
+        self.isChange = False
 
     def retranslateUi(self):
 
@@ -269,16 +270,22 @@ class Petwindow(QWidget):
         self.loadpetconfig()
         self.readcfg(self)
 
-        cfg.petSettingIsChange = False
+        self.isChange = False
 
     def saveDefaultMsg(self):
+        font = QFont('萝莉体')
         reply = QMessageBox(QMessageBox.Question, "恢复默认", "确认要将该页设置的恢复默认吗？")
+        reply.setFont(font)
         qyes = reply.addButton(self.tr("确定"), QMessageBox.YesRole)
         qno = reply.addButton(self.tr("取消"), QMessageBox.NoRole)
         reply.exec_()
         # 判断返回值，如果点击的是Yes按钮，我们就关闭组件和应用，否则就忽略关闭事件
         if reply.clickedButton() == qyes:
             self.saveDefault()
+        info = QMessageBox(QMessageBox.Information, "提示", "恢复默认成功！")
+        info.setFont(font)
+        qyes = info.addButton(self.tr("确定"), QMessageBox.YesRole)
+        info.exec_()
 
     def saveDefault(self):
         cfg = ConfigGetter()
@@ -304,7 +311,7 @@ class Petwindow(QWidget):
 
         self.loadpetconfig()
         self.readcfg(self)
-        cfg.petSettingIsChange = False
+        self.isChange = False
 
     def loadconfig(self):
         cfg = ConfigGetter()

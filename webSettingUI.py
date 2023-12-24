@@ -118,6 +118,8 @@ class WebWindow(QTabWidget):
         '''
         cfg = ConfigGetter()
         cfg.webSettingIsChange = True
+        if self.listWidget.count() < cfg.maxWebItem:
+            self.addButton.setText('添加项')
 
     def initUI(self):
         '''
@@ -135,11 +137,11 @@ class WebWindow(QTabWidget):
         font.setWeight(75)
 
         # 顶部提示
-        self.tipLabel = QLabel('双击每一项以编辑', self)
+        self.tipLabel = QLabel('双击每一项以编辑，拖拽以排列顺序', self)
         self.tipLabel.setFont(font)
 
 
-        self.listWidget = QListWidget(self)
+        self.listWidget = webList(self)
         self.listWidget.setFont(font)
         self.listWidget.setStyleSheet(  "QListWidget {" \
                                         "background-color: rgba(255, 255, 255, 128);" \
@@ -171,7 +173,7 @@ class WebWindow(QTabWidget):
         # self.saveButton.clicked.connect(self.saveItemsToCSV)
         # self.saveButton.setStyleSheet(Style.defaultButton)
 
-        self.maxItems = 15
+
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.tipLabel)
@@ -186,20 +188,70 @@ class WebWindow(QTabWidget):
 
     def addWebItem(self):
         cfg = ConfigGetter()
-        cfg.webSettingIsChange = True
-        cfg = ConfigGetter()
-        if self.listWidget.count() < self.maxItems:
-            newItem = QListWidgetItem('New Item')
-            newItem.setData(Qt.UserRole, 'https://example.com/')
+
+        if self.listWidget.count() >= cfg.maxWebItem:
+            self.addButton.setText(f'最多{cfg.maxWebItem}个item')
+            return
+
+
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle('添加待办')
+
+        titleEdit = QLineEdit()
+        describeEdit = QTextEdit()
+
+        titleEdit.setPlaceholderText('名称')
+        describeEdit.setPlaceholderText('url')
+
+        # 设置字体大小
+        font = QFont('萝莉体')
+        font.setPointSize(14)
+        titleEdit.setFont(font)
+        describeEdit.setFont(font)
+        dialog.setFont(font)
+
+        formLayout = QFormLayout()
+        formLayout.addRow('名称:', titleEdit)
+        formLayout.addRow('url:', describeEdit)
+
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(dialog.accept)
+        buttonBox.rejected.connect(dialog.reject)
+
+        # 将按钮文本改为中文
+        buttonBox.button(QDialogButtonBox.Ok).setText('确定')
+        buttonBox.button(QDialogButtonBox.Cancel).setText('取消')
+
+        formLayout.addRow(buttonBox)
+
+        dialog.setLayout(formLayout)
+
+        result = dialog.exec_()
+
+        if result == QDialog.Accepted:
+            name = titleEdit.text()
+            url = describeEdit.toPlainText()  # 修正此行，使用 toPlainText() 方法获取文本
+
+            if not name:
+                QMessageBox.warning(self, '警告', '名称不能为空!')
+                return
+
+            cfg.webSettingIsChange = True
+
+            newItem = QListWidgetItem(name)
+            newItem.setData(Qt.UserRole, url)
 
             newItem.setSizeHint(QSize(newItem.sizeHint().width(), cfg.webItemHeight))  # 设置Item的高度
             # 设置Item内部字体大小
-            font = QFont("SimSun", 14)  # 设置字体大小
+            font = QFont("萝莉体", 14)  # 设置字体大小
             font.setBold(False)
             newItem.setFont(font)
             self.listWidget.addItem(newItem)
-        else:
-            self.addButton.setText(f'最多{self.maxItems}个item')
+
+            if self.listWidget.count() >= cfg.maxWebItem:
+                self.addButton.setText(f'最多{cfg.maxWebItem}个item')
+
 
     def editItem(self, item):
         cfg = ConfigGetter()
