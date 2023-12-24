@@ -279,6 +279,7 @@ class App(QWidget):
         menu.addAction(QAction(QIcon('./data/icon/deviceon.png'), '开启掉落', self, triggered=self.dropon))
         menu.addAction(QAction(QIcon('./data/icon/deviceoff.png'), '禁用掉落', self, triggered=self.dropoff))
         menu.addAction(QAction(QIcon('./data/icon/eye_protection.png'), '隐藏', self, triggered=self.playHide))
+        menu.addSeparator()
         menu.addAction(QAction(QIcon('./data/icon/schedule.png'), '日程表', self, triggered=self.schedule))
 
         webMenu = QMenu('webMenu')
@@ -295,6 +296,7 @@ class App(QWidget):
         settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.petSetting))
         settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站收藏管理', self ,triggered=self.webSetting))
         menu.addMenu(settingMenu)
+        menu.addSeparator()
         menu.addAction(QAction(QIcon('./data/icon/close.png'), '退出', self, triggered=self.playQuit))
 
         menu.exec_(QCursor.pos())
@@ -389,18 +391,18 @@ class App(QWidget):
         tray.setIcon(QIcon(cfg.traypath))
         menu = QMenu(self)
 
-        menu.addAction(QAction(cfg.petname, self))
         menu.addAction(QAction(QIcon('./data/icon/eye_protection.png'),'显示', self, triggered=self.show))
         menu.addAction(QAction(QIcon('./data/icon/visible.png'), '隐藏', self, triggered=self.playHide))
         menu.addAction(QAction(QIcon('./data/icon/deviceon.png'), '开启掉落', self, triggered=self.dropon))
         menu.addAction(QAction(QIcon('./data/icon/deviceoff.png'), '禁用掉落', self, triggered=self.dropoff))
-
         menu.addSeparator()
+
         settingMenu = QMenu('settingMenu', self)
         settingMenu.setTitle('设置')
         settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '宠物设置', self, triggered=self.petSetting))
         settingMenu.addAction(QAction(QIcon('./data/icon/settings.png'), '网站收藏管理', self ,triggered=self.webSetting))
         menu.addMenu(settingMenu)
+        menu.addSeparator()
         menu.addAction(QAction(QIcon('./data/icon/close.png'), '退出', self, triggered=self.playQuit))
         
         tray.setContextMenu(menu)
