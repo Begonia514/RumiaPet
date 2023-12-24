@@ -82,6 +82,10 @@ class ItemDialog(QDialog):
         reply.exec_()
         if reply.clickedButton() == qyes:
             cfg.webSettingIsChange = True
+            # 更改addButton
+            if self.item.listWidget().count() <= cfg.maxWebItem:
+                self.item.listWidget().parentWidget().addButton.setText('添加项')
+
             self.item.listWidget().takeItem(self.item.listWidget().row(self.item))
             self.accept()
 
@@ -168,6 +172,8 @@ class WebWindow(QTabWidget):
         self.addButton.clicked.connect(self.addWebItem)
         self.addButton.setStyleSheet(Style.defaultConfigButton)
         self.addButton.setFixedHeight(40)
+        if self.listWidget.count() >= cfg.maxWebItem:
+            self.addButton.setText(f'最多{cfg.maxWebItem}个item')
 
         # self.saveButton = QPushButton('保存')
         # self.saveButton.clicked.connect(self.saveItemsToCSV)
