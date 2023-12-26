@@ -239,8 +239,8 @@ class WebWindow(QTabWidget):
             name = titleEdit.text()
             url = describeEdit.toPlainText()  # 修正此行，使用 toPlainText() 方法获取文本
 
-            if not name:
-                QMessageBox.warning(self, '警告', '名称不能为空!')
+            if not name or not url:
+                QMessageBox.warning(self, '警告', '名称与url都不能为空!')
                 return
 
             cfg.webSettingIsChange = True
